@@ -6,9 +6,9 @@ public class CrowdSorcery implements Domain {
 
     public final CrowdSorceryBackend crowdSorceryBackend;
     public final SinglePageApplication singlePageApplication;
-    public final Borrower borrower;
-    public final Investor investor;
     public final Database database;
+    private final Borrower borrower;
+    private final Investor investor;
     public static final String NAME = "CrowdSorcery";
     private final Payment payment;
     private final Email email;

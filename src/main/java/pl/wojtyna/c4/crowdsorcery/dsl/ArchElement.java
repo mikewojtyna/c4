@@ -16,4 +16,9 @@ public abstract class ArchElement {
     }
 
     public abstract String name();
+
+    public VerificationResult verifyArchitecture() {
+        return new VerificationResult(VerificationStatus.PASSED,
+                                      Set.of());
+    }
 }
