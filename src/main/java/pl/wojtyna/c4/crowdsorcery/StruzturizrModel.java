@@ -1,4 +1,4 @@
-package pl.wojtyna.c4;
+package pl.wojtyna.c4.crowdsorcery;
 
 import com.structurizr.Workspace;
 import com.structurizr.model.CreateImpliedRelationshipsUnlessSameRelationshipExistsStrategy;
@@ -8,7 +8,7 @@ import com.structurizr.view.*;
 
 import java.io.File;
 
-public class Model {
+public class StruzturizrModel {
 
     public static void main(String[] args) throws Exception {
         var workspace = new Workspace("Name", "Description");
@@ -109,6 +109,8 @@ public class Model {
         styles.addElementStyle(Tags.CONTAINER).background("#438CD4").color("#ffffff");
         styles.addElementStyle(Tags.SOFTWARE_SYSTEM).background("#1168bd").color("#ffffff");
         styles.addElementStyle(Tags.PERSON).background("#08427b").color("#ffffff").shape(Shape.Person);
+
+        // workspace can be rendered by structurizr
         WorkspaceUtils.saveWorkspaceToJson(workspace, new File("src/main/resources/workspace.json"));
     }
 }
