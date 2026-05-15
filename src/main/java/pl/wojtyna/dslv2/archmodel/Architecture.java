@@ -6,19 +6,41 @@ import org.contextmapper.contextmap.generator.model.Relationship;
 import org.contextmapper.contextmap.generator.model.UpstreamDownstreamRelationship;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
+import pl.wojtyna.dslv2.archmodel.process.BusinessProcess;
+import pl.wojtyna.dslv2.archmodel.process.ProcessStep;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Architecture {
 
     private final ContextMap contextMap;
     private final Set<ArchElement> elements;
+    private final List<BusinessProcess> processes = new ArrayList<>();
 
     public Architecture(ContextMap contextMap, Set<ArchElement> elements) {
         this.contextMap = contextMap;
         this.elements = elements;
+    }
+
+    public Architecture register(BusinessProcess process) {
+        processes.add(process);
+        return this;
+    }
+
+    public ContextMap contextMap() {
+        return contextMap;
+    }
+
+    public Set<ArchElement> elements() {
+        return Set.copyOf(elements);
+    }
+
+    public List<BusinessProcess> processes() {
+        return List.copyOf(processes);
     }
 
     public VerificationResult verify() {
@@ -89,6 +111,54 @@ public class Architecture {
         return new VerificationResult(
             violations.isEmpty() ? VerificationStatus.PASSED : VerificationStatus.VIOLATED,
             violations);
+    }
+
+    public VerificationResult verifyProcesses() {
+        Set<String> violations = new LinkedHashSet<>();
+        for (var process : processes) {
+            var steps = process.steps();
+            for (int i = 0; i < steps.size(); i++) {
+                var step = steps.get(i);
+                if (!isStepBacked(step)) {
+                    violations.add(stepViolation(process, i + 1, step));
+                }
+            }
+        }
+        return new VerificationResult(
+            violations.isEmpty() ? VerificationStatus.PASSED : VerificationStatus.VIOLATED,
+            violations);
+    }
+
+    private boolean isStepBacked(ProcessStep step) {
+        return switch (step) {
+            case ProcessStep.Invoke i -> hasRelationship(i.from(), i.to(), RelationshipKind.USES);
+            case ProcessStep.Publish p -> hasRelationship(p.from(), p.to(), RelationshipKind.SENDS_TO);
+            // Consume in process flow: queue -> service. Meta-model has service.consumesFrom(queue).
+            case ProcessStep.Consume c -> hasRelationship(c.to(), c.from(), RelationshipKind.CONSUMES_FROM);
+        };
+    }
+
+    private static boolean hasRelationship(ArchElement source, ArchElement target, RelationshipKind kind) {
+        return source.relationships().stream()
+                     .anyMatch(r -> r.target().equals(target) && r.kind() == kind);
+    }
+
+    private static String stepViolation(BusinessProcess process, int stepIndex, ProcessStep step) {
+        return "Process '" + process.name() + "' step " + stepIndex + ": "
+               + actionVerb(step) + " "
+               + step.from().getClass().getSimpleName() + " '" + step.from().name() + "' in BC '"
+               + step.from().boundedContext().getName() + "' -> "
+               + step.to().getClass().getSimpleName() + " '" + step.to().name() + "' in BC '"
+               + step.to().boundedContext().getName()
+               + "' is not backed by a declared relationship in the architecture model";
+    }
+
+    private static String actionVerb(ProcessStep step) {
+        return switch (step) {
+            case ProcessStep.Invoke i -> "invokes";
+            case ProcessStep.Publish p -> "publishes '" + p.eventName() + "' from";
+            case ProcessStep.Consume c -> "consumed by";
+        };
     }
 
     private ArchElement resolveElement(Class<?> clazz) {

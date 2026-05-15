@@ -24,7 +24,7 @@ public class CityBikeRentalArchitecture {
     public final Database paymentDb;
     public final Database maintenanceDb;
 
-    public final Queue maintenanceRequested;
+    public final Queue rentalEvents;
 
     public CityBikeRentalArchitecture(CityBikeRentalContextMap contextMap) {
         this.contextMap = contextMap;
@@ -41,16 +41,16 @@ public class CityBikeRentalArchitecture {
         paymentDb = new Database(contextMap.payments(), "PaymentDb");
         maintenanceDb = new Database(contextMap.maintenance(), "MaintenanceDb");
 
-        maintenanceRequested = new Queue(contextMap.fleet(), "maintenance.requested");
+        rentalEvents = new Queue(contextMap.fleet(), "rental.events");
 
         // Same-BC wiring
         customerService.storesIn(customerDb);
         rentalService.storesIn(rentalDb);
         fleetService.storesIn(fleetDb)
-                    .sendsTo(maintenanceRequested);
+                    .sendsTo(rentalEvents);
         paymentService.storesIn(paymentDb);
         maintenanceService.storesIn(maintenanceDb)
-                          .consumesFrom(maintenanceRequested);
+                          .consumesFrom(rentalEvents);
 
         // Cross-BC wiring — all downstream → upstream (valid per context map)
         rentalService.uses(customerService) // Rental (downstream) -> Customer (upstream)
@@ -59,14 +59,16 @@ public class CityBikeRentalArchitecture {
     }
 
     public Architecture architecture() {
-        return new Architecture(contextMap.contextMap(), elements());
+        var architecture = new Architecture(contextMap.contextMap(), elements());
+        architecture.register(new CityBikeRentalProcesses(this).rentingABike());
+        return architecture;
     }
 
     public Set<ArchElement> elements() {
         return Set.of(
             customerService, rentalService, fleetService, paymentService, maintenanceService,
             customerDb, rentalDb, fleetDb, paymentDb, maintenanceDb,
-            maintenanceRequested
+            rentalEvents
         );
     }
 }
