@@ -1,0 +1,302 @@
+{
+  "configuration" : { },
+  "description" : "VeloCity bike rental",
+  "documentation" : { },
+  "id" : 0,
+  "model" : {
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "documentation" : { },
+        "group" : "Customer",
+        "id" : "2",
+        "name" : "CustomerService",
+        "relationships" : [ {
+          "description" : "stores in",
+          "destinationId" : "11",
+          "id" : "13",
+          "sourceId" : "2",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,DomainService"
+      }, {
+        "documentation" : { },
+        "group" : "Fleet",
+        "id" : "3",
+        "name" : "FleetService",
+        "relationships" : [ {
+          "description" : "sends to",
+          "destinationId" : "12",
+          "id" : "14",
+          "sourceId" : "3",
+          "tags" : "Relationship"
+        }, {
+          "description" : "stores in",
+          "destinationId" : "4",
+          "id" : "15",
+          "sourceId" : "3",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,DomainService"
+      }, {
+        "documentation" : { },
+        "group" : "Fleet",
+        "id" : "4",
+        "name" : "FleetDb",
+        "tags" : "Element,Container,Database"
+      }, {
+        "documentation" : { },
+        "group" : "Rental",
+        "id" : "5",
+        "name" : "RentalService",
+        "relationships" : [ {
+          "description" : "uses",
+          "destinationId" : "2",
+          "id" : "16",
+          "sourceId" : "5",
+          "tags" : "Relationship"
+        }, {
+          "description" : "uses",
+          "destinationId" : "3",
+          "id" : "17",
+          "sourceId" : "5",
+          "tags" : "Relationship"
+        }, {
+          "description" : "stores in",
+          "destinationId" : "6",
+          "id" : "18",
+          "sourceId" : "5",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,DomainService"
+      }, {
+        "documentation" : { },
+        "group" : "Rental",
+        "id" : "6",
+        "name" : "RentalDb",
+        "tags" : "Element,Container,Database"
+      }, {
+        "documentation" : { },
+        "group" : "Payments",
+        "id" : "7",
+        "name" : "PaymentDb",
+        "tags" : "Element,Container,Database"
+      }, {
+        "documentation" : { },
+        "group" : "Maintenance",
+        "id" : "8",
+        "name" : "MaintenanceDb",
+        "tags" : "Element,Container,Database"
+      }, {
+        "documentation" : { },
+        "group" : "Payments",
+        "id" : "9",
+        "name" : "PaymentService",
+        "relationships" : [ {
+          "description" : "stores in",
+          "destinationId" : "7",
+          "id" : "19",
+          "sourceId" : "9",
+          "tags" : "Relationship"
+        }, {
+          "description" : "uses",
+          "destinationId" : "5",
+          "id" : "20",
+          "sourceId" : "9",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,DomainService"
+      }, {
+        "documentation" : { },
+        "group" : "Maintenance",
+        "id" : "10",
+        "name" : "MaintenanceService",
+        "relationships" : [ {
+          "description" : "consumes from",
+          "destinationId" : "12",
+          "id" : "21",
+          "sourceId" : "10",
+          "tags" : "Relationship"
+        }, {
+          "description" : "stores in",
+          "destinationId" : "8",
+          "id" : "22",
+          "sourceId" : "10",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container,DomainService"
+      }, {
+        "documentation" : { },
+        "group" : "Customer",
+        "id" : "11",
+        "name" : "CustomerDb",
+        "tags" : "Element,Container,Database"
+      }, {
+        "documentation" : { },
+        "group" : "Fleet",
+        "id" : "12",
+        "name" : "rental.events",
+        "tags" : "Element,Container,Queue"
+      } ],
+      "documentation" : { },
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "System",
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "VeloCity",
+  "views" : {
+    "configuration" : {
+      "branding" : { },
+      "styles" : {
+        "elements" : [ {
+          "background" : "#438cd4",
+          "color" : "#ffffff",
+          "tag" : "DomainService"
+        }, {
+          "background" : "#2e8b57",
+          "color" : "#ffffff",
+          "shape" : "Cylinder",
+          "tag" : "Database"
+        }, {
+          "background" : "#d4a017",
+          "color" : "#ffffff",
+          "shape" : "Pipe",
+          "tag" : "Queue"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : true
+      },
+      "description" : "Technological perspective",
+      "elements" : [ {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "8",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "9",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Technological",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "13"
+      }, {
+        "id" : "14"
+      }, {
+        "id" : "15"
+      }, {
+        "id" : "16"
+      }, {
+        "id" : "17"
+      }, {
+        "id" : "18"
+      }, {
+        "id" : "19"
+      }, {
+        "id" : "20"
+      }, {
+        "id" : "21"
+      }, {
+        "id" : "22"
+      } ],
+      "softwareSystemId" : "1"
+    } ],
+    "dynamicViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : true
+      },
+      "description" : "Renting a bike",
+      "elementId" : "1",
+      "elements" : [ {
+        "id" : "3",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalBoundariesVisible" : false,
+      "key" : "process-renting-a-bike",
+      "order" : 2,
+      "relationships" : [ {
+        "description" : "invokes",
+        "id" : "17",
+        "order" : "1",
+        "response" : false
+      }, {
+        "description" : "bike.rented",
+        "id" : "14",
+        "order" : "2",
+        "response" : false
+      }, {
+        "description" : "consumes",
+        "id" : "21",
+        "order" : "3",
+        "response" : true
+      } ]
+    } ]
+  }
+}
