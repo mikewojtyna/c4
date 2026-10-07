@@ -37,3 +37,5 @@ build/
 /src/main/resources/workspace.dsl
 /src/main/resources/workspace.json
 src/main/resources/velocity/.structurizr/
+src/main/resources/velocity/context-map.png
+src/main/resources/velocity/workspace.json
